@@ -25,7 +25,7 @@ import spark.servlet.SparkApplication;
 public class WebApp implements SparkApplication {
 
   public static final Gson gson = new Gson();
-  public static final String url = "jdbc:h2:mem:test";
+  public static final String url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
   
 	@Override
 	public void init() {

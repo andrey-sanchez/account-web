@@ -24,9 +24,10 @@ public class GetTransactionRoute implements Route {
 	public Object handle(Request request, Response response) throws Exception {
     final String id = request.params("id");
     final Optional<Transaction> account = transactions.getById(id);
-    if (account.isPresent()) {
+    if (!account.isPresent()) {
       response.status(HttpStatus.NOT_FOUND_404);
-      return null;
+      response.type(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
+      return "";
     }
     else {
       response.status(HttpStatus.OK_200);
