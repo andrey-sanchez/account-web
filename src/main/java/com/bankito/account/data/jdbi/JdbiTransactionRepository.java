@@ -34,22 +34,19 @@ public class JdbiTransactionRepository implements TransactionRepository {
           tHandle -> {
             log.info("saving transaction");
             tHandle
-              .createUpdate("INSERT INTO transaction (id, timestamp, type, owner_account_id) VALUES (:id, :timestamp, :type, :owner_account_id)")
-              .bindBean(tx)
-              .execute();
+              .execute("INSERT INTO transaction (id, timestamp, type, owner_account_id) VALUES (?, ?, ?, ?)", tx.getId(), tx.getTimestamp(), "deposit", "01");
 
             log.info("saving movements");
-            for(Movement m : tx.getMovements()) {
-              m.setTransactionId(tx.getId());
-              m.setTimestamp(now.getEpochSecond());
-              tHandle
-                .createUpdate("INSERT INTO movement (id, account_id, transaction_id, timestamp, value, description) VALUES (:id, :account_id, :transaction_id, :timestamp, :value, :description)")
-                .bindBean(m)         
-                .execute();
-              }
+            // TODO: escribir aqui movimientos
+            // for(Movement m : tx.getMovements()) {
+            //   m.setTransactionId(tx.getId());
+            //   m.setTimestamp(now.getEpochSecond());
+            //   tHandle
+            //     .createUpdate("INSERT INTO movement (id, account_id, transaction_id, timestamp, value, description) VALUES (:id, :account_id, :transaction_id, :timestamp, :value, :description)")
+            //     .bindBean(m)         
+            //     .execute();
+            //   }
 
-            tHandle.commit();
-            
             return tx; 
           });
       } catch(Exception ex) {
