@@ -26,6 +26,7 @@ public class GetMovementByIdRoute implements Route {
     final Optional<Movement> account = movements.getById(id);
     if (!account.isPresent()) {
       response.status(HttpStatus.NOT_FOUND_404);
+      response.type(MimeTypes.Type.TEXT_PLAIN_UTF_8.toString());
       return "";
     }
     else {

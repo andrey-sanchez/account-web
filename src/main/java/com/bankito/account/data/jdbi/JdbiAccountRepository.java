@@ -22,11 +22,17 @@ public class JdbiAccountRepository implements AccountRepository {
           .mapToBean(Account.class)
           .findFirst();
       if (acc.isPresent()) {
-        handle.createUpdate("UPDATE account SET owner = :owner WHERE id = :id").bindBean(account);
+        handle.createUpdate("UPDATE account SET owner = :owner WHERE id = :id")
+          .bindBean(account)
+          .execute();
       }
       else {
-        handle.createUpdate("INSERT INTO account (id, owner) VALUES (:id, :owner)").bindBean(account);
+        handle.createUpdate("INSERT INTO account (id, owner) VALUES (:id, :owner)")
+          .bindBean(account)
+          .execute();
       }
+
+      handle.close();
     });
 	}
 

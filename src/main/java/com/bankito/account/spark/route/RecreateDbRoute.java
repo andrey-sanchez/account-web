@@ -19,6 +19,8 @@ public class RecreateDbRoute implements Route {
 	@Override
 	public Object handle(Request request, Response response) throws Exception {
     jdbi.useHandle(handler -> {
+      handler.execute("CREATE DATABASE IF NOT EXISTS accountdb");
+      handler.execute("USE accountdb");
       handler.execute("DROP TABLE IF EXISTS transaction");
       handler.execute("DROP TABLE IF EXISTS movement");
       handler.execute("DROP TABLE IF EXISTS account");

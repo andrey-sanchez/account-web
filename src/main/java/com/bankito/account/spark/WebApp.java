@@ -16,7 +16,8 @@ import com.bankito.account.spark.route.NewTransactionRoute;
 import com.bankito.account.spark.route.RecreateDbRoute;
 import com.bankito.account.spark.route.SaveAccountRoute;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+// import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.mysql.cj.jdbc.MysqlDataSource;
 
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.h2.H2DatabasePlugin;
@@ -27,16 +28,35 @@ import spark.servlet.SparkApplication;
 public class WebApp implements SparkApplication {
 
   public static final Gson gson = new Gson();
-  public static final String url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
+  // public static final String url = "jdbc:mysql:User=root;Password=password;Database=account-db;Server=192.168.99.100;Port=3306;";
+  // public static final String url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
   
 	@Override
 	public void init() {
-    Jdbi jdbi = Jdbi.create(url);
-    jdbi.installPlugin(new H2DatabasePlugin());
 
-    final AccountRepository accounts = makeAccounts(jdbi);
-    final TransactionRepository transactions = makeTransactions(jdbi);
-    final MovementRepository movements = makeMovements(jdbi);
+    MysqlDataSource rootDs = new MysqlDataSource();
+    MysqlDataSource ds = new MysqlDataSource();
+
+    rootDs.setServerName("192.168.99.100");
+    rootDs.setPort(3306);
+    rootDs.setUser("root");
+    rootDs.setPassword("password");
+
+    ds.setServerName("192.168.99.100");
+    ds.setPort(3306);
+    ds.setUser("root");
+    ds.setPassword("password");
+    ds.setDatabaseName("accountdb");
+    
+    Jdbi applicationJdbi = Jdbi.create(ds);
+    Jdbi rootJdbi = Jdbi.create(rootDs);
+    
+    applicationJdbi.installPlugin(new H2DatabasePlugin());
+    rootJdbi.installPlugin(new H2DatabasePlugin());
+
+    final AccountRepository accounts = makeAccounts(applicationJdbi);
+    final TransactionRepository transactions = makeTransactions(applicationJdbi);
+    final MovementRepository movements = makeMovements(applicationJdbi);
     
     final GetAccountRoute getAccountRoute = new GetAccountRoute(accounts);
     final GetTransactionRoute getTransactionRoute = new GetTransactionRoute(transactions);
@@ -45,7 +65,7 @@ public class WebApp implements SparkApplication {
     final GetCurrentBalanceRoute getCurrentBalance = new GetCurrentBalanceRoute();
     final GetMovementByAccountIdRoute getMovementsByAccountIdRoute = new GetMovementByAccountIdRoute(movements);
     final GetMovementByIdRoute getMovementRoute = new GetMovementByIdRoute(movements);
-    final RecreateDbRoute recreateDbRoute = new RecreateDbRoute(jdbi);
+    final RecreateDbRoute recreateDbRoute = new RecreateDbRoute(rootJdbi);
 
     Spark.path("/account", () -> {
       Spark.put("/:id", saveAccountRoute);
