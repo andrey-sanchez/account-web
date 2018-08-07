@@ -1,7 +1,5 @@
 package com.bankito.account.entity;
 
-import java.time.Instant;
-
 public class Movement {
   private String id;
   private String accountId;

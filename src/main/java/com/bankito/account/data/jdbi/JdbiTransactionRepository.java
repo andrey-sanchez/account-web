@@ -63,7 +63,7 @@ public class JdbiTransactionRepository implements TransactionRepository {
         if (result.isPresent()) {
           MovementList movements = new MovementList();
           handle.select("SELECT * FROM movement WHERE transaction_id = ?", id)
-            .mapToBean(Movement.class)          
+            .mapToBean(Movement.class)
             .iterator()
             .forEachRemaining(m -> movements.add(m));
           result.get().setMovements(movements);

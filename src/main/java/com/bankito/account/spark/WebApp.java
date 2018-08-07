@@ -16,6 +16,7 @@ import com.bankito.account.spark.route.NewTransactionRoute;
 import com.bankito.account.spark.route.RecreateDbRoute;
 import com.bankito.account.spark.route.SaveAccountRoute;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.h2.H2DatabasePlugin;
