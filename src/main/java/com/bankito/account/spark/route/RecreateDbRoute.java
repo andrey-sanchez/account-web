@@ -25,7 +25,6 @@ public class RecreateDbRoute implements Route {
       handler.execute("CREATE TABLE account (id NVARCHAR(32) NOT NULL PRIMARY KEY, owner NVARCHAR(64) NOT NULL)");
       handler.execute("CREATE TABLE movement (id NVARCHAR(32) NOT NULL PRIMARY KEY, account_id NVARCHAR(32) NOT NULL, transaction_id NVARCHAR(32) NOT NULL, amount BIGINT NOT NULL, timestamp BIGINT NOT NULL, description NVARCHAR(128) NOT NULL)");
       handler.execute("CREATE TABLE transaction (id NVARCHAR(32) NOT NULL PRIMARY KEY, owner NVARCHAR(64) NOT NULL, timestamp bigint NOT NULL, type VARCHAR(16) NOT NULL)");
-
     });
 
     response.status(HttpStatus.OK_200);

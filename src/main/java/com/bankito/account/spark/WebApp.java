@@ -8,6 +8,7 @@ import com.bankito.account.data.AccountRepository;
 import com.bankito.account.data.MovementRepository;
 import com.bankito.account.data.TransactionRepository;
 import com.bankito.account.spark.route.GetAccountRoute;
+import com.bankito.account.spark.route.GetCurrentBalanceRoute;
 import com.bankito.account.spark.route.GetMovementByAccountIdRoute;
 import com.bankito.account.spark.route.GetMovementByIdRoute;
 import com.bankito.account.spark.route.GetTransactionRoute;
@@ -40,6 +41,7 @@ public class WebApp implements SparkApplication {
     final GetTransactionRoute getTransactionRoute = new GetTransactionRoute(transactions);
     final SaveAccountRoute saveAccountRoute = new SaveAccountRoute(accounts);
     final NewTransactionRoute newTransactionRoute = new NewTransactionRoute(transactions);
+    final GetCurrentBalanceRoute getCurrentBalance = new GetCurrentBalanceRoute();
     final GetMovementByAccountIdRoute getMovementsByAccountIdRoute = new GetMovementByAccountIdRoute(movements);
     final GetMovementByIdRoute getMovementRoute = new GetMovementByIdRoute(movements);
     final RecreateDbRoute recreateDbRoute = new RecreateDbRoute(jdbi);
@@ -47,6 +49,7 @@ public class WebApp implements SparkApplication {
     Spark.path("/account", () -> {
       Spark.put("/:id", saveAccountRoute);
       Spark.get("/:id", getAccountRoute);
+      Spark.get("/:id/currentbalance", getCurrentBalance);
       Spark.get("/:id/movement", getMovementsByAccountIdRoute);
     });
     Spark.path("/transaction", () -> {

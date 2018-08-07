@@ -26,7 +26,7 @@ public class SaveAccountRoute implements Route {
     accounts.save(account);
     response.status(HttpStatus.OK_200);
     response.type(MimeTypes.Type.APPLICATION_JSON_UTF_8.toString());
-    return account;
+    return WebApp.gson.toJson(account);
   }
 
 }
