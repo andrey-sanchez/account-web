@@ -16,7 +16,7 @@
     <appender-ref ref="stdout"/>
   </appender>
 
-  <logger name="com.mercadolibre" additivity="false">
+  <logger name="com.bankito" additivity="false">
     <level value="debug"/>
     <appender-ref ref="async"/>
   </logger>

@@ -10,9 +10,12 @@ import com.bankito.account.entity.Transaction;
 
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.core.transaction.TransactionIsolationLevel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JdbiTransactionRepository implements TransactionRepository {
 
+  private static final Logger log = LoggerFactory.getLogger(JdbiTransactionRepository.class);
   private final Jdbi jdbi;
 
   public JdbiTransactionRepository(Jdbi jdbi) {
@@ -24,18 +27,20 @@ public class JdbiTransactionRepository implements TransactionRepository {
     final Instant now = Instant.now();
     return jdbi.withHandle(handle -> {
       try {
-        tx.setTimestamp(now);
+        tx.setTimestamp(now.getEpochSecond());
         return
         handle.inTransaction(
           TransactionIsolationLevel.SERIALIZABLE, 
-          tHandle -> { 
+          tHandle -> {
+            log.info("saving transaction");
             tHandle
               .createQuery("INSERT INTO transaction (id, timestamp, type, owner_account_id) VALUES (:id, :timestamp, :type, :owner_account_id)")
               .bindBean(tx);
 
+            log.info("saving movements");
             for(Movement m : tx.getMovements()) {
               m.setTransactionId(tx.getId());
-              m.setTimestamp(now);
+              m.setTimestamp(now.getEpochSecond());
               tHandle
                 .createQuery("INSERT INTO movement (id, account_id, transaction_id, timestamp, value, description) VALUES (:id, :account_id, :transaction_id, :timestamp, :value, :description)")
                 .bindBean(m);            
