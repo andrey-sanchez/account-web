@@ -1,0 +1,12 @@
+{
+  "owner_transaction_id": "{owner_account_id}",
+  "type": "deposit",
+  "movements": [
+    {
+      "id": "{mov_id}",
+      "account_id": "{owner_account_id}",
+      "amount": 125,
+      "description": "Cash deposit"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 package com.bankito.account.data.jdbi;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import com.bankito.account.data.TransactionRepository;
@@ -19,17 +20,22 @@ public class JdbiTransactionRepository implements TransactionRepository {
   }
 
   public Transaction newTx(Transaction tx) {
+
+    final Instant now = Instant.now();
     return jdbi.withHandle(handle -> {
       try {
+        tx.setTimestamp(now);
         return
         handle.inTransaction(
           TransactionIsolationLevel.SERIALIZABLE, 
           tHandle -> { 
             tHandle
-              .createQuery("INSERT INTO transaction (id, timestamp) VALUES (:id, :timestamp)")
+              .createQuery("INSERT INTO transaction (id, timestamp, type, owner_account_id) VALUES (:id, :timestamp, :type, :owner_account_id)")
               .bindBean(tx);
 
             for(Movement m : tx.getMovements()) {
+              m.setTransactionId(tx.getId());
+              m.setTimestamp(now);
               tHandle
                 .createQuery("INSERT INTO movement (id, account_id, transaction_id, timestamp, value, description) VALUES (:id, :account_id, :transaction_id, :timestamp, :value, :description)")
                 .bindBean(m);            

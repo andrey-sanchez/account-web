@@ -10,18 +10,18 @@ public class Movement {
   private long amount;
   private String description;
 
-  public String id() { return this.id; }
-  public String accountId() { return this.accountId; }
-  public String transactionId() { return this.transactionId; }
-  public Instant timestamp() { return this.timestamp; }
-  public long amount() { return this.amount; }
-  public String description() { return this.description; }
+  public String getId() { return this.id; }
+  public String getAccountId() { return this.accountId; }
+  public String getTransactionId() { return this.transactionId; }
+  public Instant getTimestamp() { return this.timestamp; }
+  public long getAmount() { return this.amount; }
+  public String getDescription() { return this.description; }
 
-  public void id(String value) { this.id = value; }
-  public void accountId(String value) { this.accountId = value; }
-  public void transactionId(String value) { this.transactionId = value; }
-  public void timestamp(Instant value) { this.timestamp = value; }
-  public void amount(long value) { this.amount = value; }
-  public void description(String value) { this.description = value; }
+  public void setId(String value) { this.id = value; }
+  public void setAccountId(String value) { this.accountId = value; }
+  public void setTransactionId(String value) { this.transactionId = value; }
+  public void setTimestamp(Instant value) { this.timestamp = value; }
+  public void setAmount(long value) { this.amount = value; }
+  public void setDescription(String value) { this.description = value; }
 
 }

@@ -21,7 +21,7 @@ public class NewTransactionRoute implements Route {
   
   public Object handle(final Request request, final Response response) throws Exception {
     Transaction tx = WebApp.gson.fromJson(request.body(), Transaction.class);
-    transactions.newTx(tx);
+    tx = transactions.newTx(tx);
     response.status(HttpStatus.CREATED_201);
     response.type(MimeTypes.Type.APPLICATION_JSON_UTF_8.toString());
     return WebApp.gson.toJson(tx);

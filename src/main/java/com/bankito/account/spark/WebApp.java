@@ -52,10 +52,9 @@ public class WebApp implements SparkApplication {
       Spark.get("/:id/currentbalance", getCurrentBalance);
       Spark.get("/:id/movement", getMovementsByAccountIdRoute);
     });
-    Spark.path("/transaction", () -> {
-      Spark.get("/:id", getTransactionRoute);
-      Spark.post("", newTransactionRoute);
-    });
+
+    Spark.post("/transaction", newTransactionRoute);
+    Spark.get("/transaction/:id", getTransactionRoute);
 
     Spark.path("/movement", () -> {
       Spark.get("/:id", getMovementRoute);
