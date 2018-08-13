@@ -32,3 +32,6 @@ target/
 
 # VSCode ignored files
 .vscode/settings.json
+
+.idea
+*.iml

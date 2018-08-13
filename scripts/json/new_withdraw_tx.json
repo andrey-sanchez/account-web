@@ -1,0 +1,13 @@
+{
+  "id": "{tx_id}",
+  "owner_transaction_id": "{owner_account_id}",
+  "type": "withdraw",
+  "movements": [
+    {
+      "id": "{mov_id}",
+      "account_id": "{owner_account_id}",
+      "amount": -100,
+      "description": "ATM withdraw"
+    }
+  ]
+}

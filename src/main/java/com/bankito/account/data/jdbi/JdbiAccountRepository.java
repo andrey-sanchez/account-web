@@ -1,11 +1,10 @@
 package com.bankito.account.data.jdbi;
 
-import java.util.Optional;
-
 import com.bankito.account.data.AccountRepository;
 import com.bankito.account.entity.Account;
-
 import org.jdbi.v3.core.Jdbi;
+
+import java.util.Optional;
 
 public class JdbiAccountRepository implements AccountRepository {
 
@@ -22,12 +21,12 @@ public class JdbiAccountRepository implements AccountRepository {
           .mapToBean(Account.class)
           .findFirst();
       if (acc.isPresent()) {
-        handle.createUpdate("UPDATE account SET owner = :owner WHERE id = :id")
+        handle.createUpdate("UPDATE account SET owner = :owner, balance = :balance WHERE id = :id")
           .bindBean(account)
           .execute();
       }
       else {
-        handle.createUpdate("INSERT INTO account (id, owner) VALUES (:id, :owner)")
+        handle.createUpdate("INSERT INTO account (id, owner, balance) VALUES (:id, :owner, :balance)")
           .bindBean(account)
           .execute();
       }
